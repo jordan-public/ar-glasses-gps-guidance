@@ -359,7 +359,7 @@ function getCurrentPosition() {
           lng: position.coords.longitude,
         })
       },
-      () => reject(new Error('Location permission is required for live guidance')),
+      error => reject(new Error(describeGeolocationError(error))),
       {
         enableHighAccuracy: true,
         timeout: 15000,
@@ -367,6 +367,23 @@ function getCurrentPosition() {
       },
     )
   })
+}
+
+function describeGeolocationError(error: GeolocationPositionError) {
+  const secureContextHint = window.isSecureContext
+    ? ''
+    : ' The WebView is not in a secure context; try an HTTPS dev URL or a packaged build.'
+
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      return `Location was denied by the WebView. Confirm this app requests the Even Hub location permission and relaunch it.${secureContextHint}`
+    case error.POSITION_UNAVAILABLE:
+      return `Location is currently unavailable from the phone.${secureContextHint}`
+    case error.TIMEOUT:
+      return `Timed out waiting for phone location. Try again outdoors or after the GPS settles.${secureContextHint}`
+    default:
+      return `Could not read phone location.${secureContextHint}`
+  }
 }
 
 function getDirections(origin: LatLngLiteral, destination: string, travelMode: TravelMode) {

@@ -21,6 +21,8 @@ Then either:
 
 The API key is stored only in this browser's `localStorage`; it is not committed to the repo.
 
+The packaged app requests Even Hub `location` permission plus `network` access to `https://maps.googleapis.com` and `https://maps.gstatic.com`. During local sideloading, WebView geolocation may still require a secure origin; if a LAN `http://` QR URL refuses location, retry with an HTTPS dev URL or test a packaged build.
+
 ## Controls
 
 - **Tap:** manually advance to the next navigation step
@@ -43,12 +45,12 @@ Produces an `.ehpk` file.
 |---|---|
 | `index.html` | WebView host. Viewport meta tag locks zoom; CSS kills iOS double-tap zoom + rubber-band scroll. |
 | `src/main.ts` | Creates navigation text containers, loads Google Maps, converts Directions steps to glasses guidance, watches GPS, and handles tap/scroll lifecycle events. |
-| `app.json` | Even Hub manifest. No permissions by default. |
+| `app.json` | Even Hub manifest with location and Google Maps network permissions. |
 | `tsconfig.json` | Standard Vite vanilla-ts config. |
 | `vite.config.ts` | Dev server on port 5173, host binding for LAN QR access. |
 
 ## Next steps
 
 - Add production key provisioning instead of manual key entry.
-- Confirm whether the packaged Even Hub runtime needs an explicit location permission string for store distribution.
+- Move Google Maps calls behind a small backend if browser key exposure is not acceptable for production.
 - Add image containers if you want map tiles or lane diagrams.

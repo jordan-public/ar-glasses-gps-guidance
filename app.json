@@ -6,6 +6,19 @@
   "min_app_version": "2.0.0",
   "min_sdk_version": "0.0.10",
   "entrypoint": "index.html",
-  "permissions": [],
+  "permissions": [
+    {
+      "name": "location",
+      "desc": "Reads the phone's current location to calculate turn-by-turn guidance."
+    },
+    {
+      "name": "network",
+      "desc": "Loads Google Maps and route data for live navigation.",
+      "whitelist": [
+        "https://maps.googleapis.com",
+        "https://maps.gstatic.com"
+      ]
+    }
+  ],
   "supported_languages": ["en"]
 }
