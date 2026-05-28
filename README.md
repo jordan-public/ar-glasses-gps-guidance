@@ -1,6 +1,24 @@
-# navigation
+# AR glasses GPS guidance
 
-Even Hub G2 navigation starter. Vite + TypeScript + SDK + CLI + simulator, with a glasses-first turn-by-turn route display, Google Maps Directions hookup, live GPS step advancement, and companion controls for testing.
+Navigation app for Even Realities glasses, built on the Even Hub SDK. It targets the Even G2 glasses flow with Vite + TypeScript + SDK + CLI + simulator, a glasses-first turn-by-turn route display, Google Maps Directions hookup, live GPS step advancement, and companion controls for testing.
+
+## Screenshots
+
+Start guidance from the companion view:
+
+![Start guidance screen](./startnav.png)
+
+Follow the active turn-by-turn display:
+
+![Active navigation screen](./navigating.png)
+
+## How it works
+
+The app runs as an Even Hub WebView companion app for Even Realities glasses and renders a compact guidance UI to the lenses with SDK text containers. The companion view collects a Google Maps API key, destination, and travel mode, then starts a route from the phone's current location.
+
+On startup, `src/main.ts` creates five glasses containers: route summary, maneuver, step details, progress, and footer status. After guidance starts, the app loads Google Maps JavaScript, requests the phone location through WebView geolocation, asks Google Directions for a route, converts each route step into glasses-friendly instructions, and updates the glasses display.
+
+While guidance is active, GPS updates can advance to the next step when the phone gets close to the current step endpoint. The app also reroutes after meaningful movement so the displayed directions stay fresh. Manual controls remain available for demos and simulator testing.
 
 ## Run
 
@@ -17,7 +35,7 @@ Then either:
 
 1. Create a browser-restricted Google Maps Platform API key.
 2. Enable **Maps JavaScript API** and **Directions API** for the key's project.
-3. Open the companion view, paste the key, enter a destination, pick a travel mode, and tap **Start Guidance**.
+3. Run the app, paste the key into the companion view, enter a destination, pick a travel mode, and tap **Start Guidance**.
 
 The API key is stored only in this browser's `localStorage`; it is not committed to the repo.
 
@@ -29,7 +47,7 @@ The packaged app requests Even Hub `location` permission plus `network` access t
 - **Scroll down:** advance to the next navigation step
 - **Scroll up:** go back one step
 - **Double-tap:** exit the app
-- **Companion view:** start a live Google Maps route, reroute from current GPS, and use Previous, Mute, and Next while testing
+- **Companion view:** start a live Google Maps route, then use Previous, Mute, and Next while testing
 
 ## Pack for distribution
 
